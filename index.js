@@ -18,12 +18,10 @@ const db = getFirestore();
 
 app.set("view engine", "ejs");
 
-app.get("/", (req, res) => {
-  res.render("home");
-});
+
 
 app.get("/signin", (req, res) => {
-    res.render("signin");
+    res.sendFile(__dirname+"/views/signin.html");
 });
 
 
@@ -37,9 +35,10 @@ app.get("/signinsubmit", (req, res) => {
         .get()
         .then((docs) => {
             if (docs.size > 0) {
-                res.render("home");
+                res.sendFile(__dirname+"/views/website.html");
+                
             }else {
-                res.render("loginfail");
+                res.send("loginfail");
             }
         });
 });
@@ -47,9 +46,9 @@ app.get("/signinsubmit", (req, res) => {
 app.get("/signupsubmit", (req, res) => {
     
     
-    const email = req.query.email;
-    const password = req.query.password;
-    const rpwd = req.query.rpwd;
+    var email = req.query.email;
+    var password = req.query.password;
+    
 
 //Adding new data to collection
     db.collection("users")
@@ -57,15 +56,15 @@ app.get("/signupsubmit", (req, res) => {
     
             email: email,
             password: password,
-            rpwd: rpwd,
+            
         })
         .then(()=>{
-            res.render("home");
+            res.sendFile(__dirname+"/views/signin.html");
         });
 });
 
 app.get("/signup", (req, res) => {
-    res.render("signup");
+    res.sendFile(__dirname+"/views/signup.html");
 });
 
 app.listen(port, () => {
